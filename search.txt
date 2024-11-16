@@ -1,0 +1,458 @@
+1. 線性搜尋 (Linear Search)
+
+#include <iostream>
+using namespace std;
+
+int linearSearch(int arr[], int n, int target) {
+    for (int i = 0; i < n; ++i) {
+        if (arr[i] == target) {
+            return i;  // 返回找到元素的索引
+        }
+    }
+    return -1;  // 若未找到，返回 -1
+}
+
+int main() {
+    int arr[] = {3, 5, 2, 8, 6, 7};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int target = 8;
+
+    int result = linearSearch(arr, n, target);
+    if (result != -1) {
+        cout << "元素 " << target << " 在索引 " << result << " 處。\n";
+    } else {
+        cout << "未找到元素 " << target << "。\n";
+    }
+    
+    return 0;
+}
+
+
+-------------------------------------------------------------------------------
+2. 二分搜尋 (Binary Search)
+
+#include <iostream>
+using namespace std;
+
+int binarySearch(int arr[], int n, int target) {
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        // 如果找到目標元素
+        if (arr[mid] == target) {
+            return mid;
+        }
+        // 如果目標元素在中間元素的右邊
+        else if (arr[mid] < target) {
+            left = mid + 1;
+        }
+        // 如果目標元素在中間元素的左邊
+        else {
+            right = mid - 1;
+        }
+    }
+    return -1;  // 若未找到，返回 -1
+}
+
+int main() {
+    int arr[] = {2, 3, 5, 6, 7, 8};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int target = 6;
+
+    int result = binarySearch(arr, n, target);
+    if (result != -1) {
+        cout << "元素 " << target << " 在索引 " << result << " 處。\n";
+    } else {
+        cout << "未找到元素 " << target << "。\n";
+    }
+    
+    return 0;
+}
+
+------------------------------------------------------------------------------
+3.使用遞迴實現 DFS
+------------------------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+void dfs_recursive(int node, vector<vector<int>>& graph, unordered_set<int>& visited) {
+    // 訪問當前節點
+    cout << node << " ";
+    visited.insert(node);
+    
+    // 遍歷所有鄰居節點
+    for (int neighbor : graph[node]) {
+        if (visited.find(neighbor) == visited.end()) {  // 如果鄰居未被訪問過
+            dfs_recursive(neighbor, graph, visited);
+        }
+    }
+}
+
+int main() {
+    // 建立圖的鄰接表表示
+    vector<vector<int>> graph = {
+        {},        // 節點 0 (無使用)
+        {2, 3},    // 節點 1 的鄰居 2, 3
+        {1, 4, 5}, // 節點 2 的鄰居 1, 4, 5
+        {1},       // 節點 3 的鄰居 1
+        {2},       // 節點 4 的鄰居 2
+        {2}        // 節點 5 的鄰居 2
+    };
+    
+    unordered_set<int> visited;  // 記錄已訪問過的節點
+    
+    cout << "DFS traversal starting from node 1: ";
+    dfs_recursive(1, graph, visited);
+    
+    return 0;
+}
+
+使用堆疊實現 DFS（非遞迴）
+---------------------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <unordered_set>
+using namespace std;
+
+void dfs_stack(int start, vector<vector<int>>& graph) {
+    unordered_set<int> visited;  // 記錄已訪問的節點
+    stack<int> s;  // 用來模擬遞迴的堆疊
+
+    s.push(start);  // 把起始節點推入堆疊
+
+    while (!s.empty()) {
+        int node = s.top();  // 獲取堆疊頂端的節點
+        s.pop();  // 弹出節點
+
+        if (visited.find(node) == visited.end()) {
+            cout << node << " ";  // 訪問節點
+            visited.insert(node);  // 標記為已訪問
+            
+            // 將所有未訪問的鄰居節點推入堆疊
+            for (int neighbor : graph[node]) {
+                if (visited.find(neighbor) == visited.end()) {
+                    s.push(neighbor);
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    // 建立圖的鄰接表表示
+    vector<vector<int>> graph = {
+        {},        // 節點 0 (無使用)
+        {2, 3},    // 節點 1 的鄰居 2, 3
+        {1, 4, 5}, // 節點 2 的鄰居 1, 4, 5
+        {1},       // 節點 3 的鄰居 1
+        {2},       // 節點 4 的鄰居 2
+        {2}        // 節點 5 的鄰居 2
+    };
+    
+    cout << "DFS traversal starting from node 1: ";
+    dfs_stack(1, graph);
+    
+    return 0;
+}
+
+-------------------------------------------------------------------
+4.bfs
+
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+// 图的邻接表表示
+class Graph {
+public:
+    int V;  // 顶点的数量
+    vector<vector<int>> adj;  // 邻接表
+
+    // 构造函数
+    Graph(int V) {
+        this->V = V;
+        adj.resize(V);
+    }
+
+    // 添加边
+    void addEdge(int u, int v) {
+        adj[u].push_back(v);
+        adj[v].push_back(u);  // 如果是有向图，这行可以删除
+    }
+
+    // 广度优先搜索
+    void BFS(int start) {
+        // 记录每个节点是否被访问
+        vector<bool> visited(V, false);
+
+        // 队列
+        queue<int> q;
+
+        // 从起始节点开始
+        visited[start] = true;
+        q.push(start);
+
+        while (!q.empty()) {
+            // 当前节点
+            int node = q.front();
+            q.pop();
+            cout << node << " ";  // 处理当前节点
+
+            // 遍历相邻节点
+            for (int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    q.push(neighbor);
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    // 创建图实例
+    Graph g(6);
+
+    // 添加边
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    g.addEdge(1, 3);
+    g.addEdge(1, 4);
+    g.addEdge(2, 5);
+
+    cout << "BFS starting from node 0: ";
+    g.BFS(0);
+
+    return 0;
+}
+
+
+-------------------------------------------------------
+5.A* 搜尋（A* Search）
+
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <cmath>
+#include <unordered_map>
+#include <set>
+
+using namespace std;
+
+// 定義節點結構
+struct Node {
+    int x, y;        // 節點的座標
+    int g, h;        // g: 距離起點的代價, h: 預測距離終點的代價
+    Node* parent;    // 父節點，方便回溯路徑
+
+    Node(int x, int y, int g, int h, Node* parent = nullptr) 
+        : x(x), y(y), g(g), h(h), parent(parent) {}
+
+    int f() const { return g + h; }  // f值 = g + h
+};
+
+// 設定比較函數，使得 Node 能被用作優先隊列中的元素
+struct CompareNode {
+    bool operator()(Node* n1, Node* n2) {
+        return n1->f() > n2->f();  // 小的 f 值優先
+    }
+};
+
+// 計算兩個節點之間的曼哈頓距離
+int manhattanDistance(int x1, int y1, int x2, int y2) {
+    return abs(x1 - x2) + abs(y1 - y2);
+}
+
+// A* 搜尋演算法
+vector<Node*> AStarSearch(int startX, int startY, int goalX, int goalY, int gridWidth, int gridHeight) {
+    priority_queue<Node*, vector<Node*>, CompareNode> openList;
+    set<pair<int, int>> closedList;
+
+    // 起點的啟發式函數值（h），以及 g 值（距離起點的距離）
+    Node* startNode = new Node(startX, startY, 0, manhattanDistance(startX, startY, goalX, goalY));
+    openList.push(startNode);
+
+    // 八個可能的移動方向（上下左右，四個對角線）
+    vector<pair<int, int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+
+    while (!openList.empty()) {
+        Node* currentNode = openList.top();
+        openList.pop();
+
+        // 如果達到目標，回溯路徑
+        if (currentNode->x == goalX && currentNode->y == goalY) {
+            vector<Node*> path;
+            while (currentNode != nullptr) {
+                path.push_back(currentNode);
+                currentNode = currentNode->parent;
+            }
+            reverse(path.begin(), path.end());
+            return path;
+        }
+
+        closedList.insert({currentNode->x, currentNode->y});
+
+        // 對於每個鄰居
+        for (auto& dir : directions) {
+            int newX = currentNode->x + dir.first;
+            int newY = currentNode->y + dir.second;
+
+            // 跳過無效的坐標
+            if (newX < 0 || newX >= gridWidth || newY < 0 || newY >= gridHeight) {
+                continue;
+            }
+
+            // 如果這個節點已經在 closedList 中，跳過
+            if (closedList.find({newX, newY}) != closedList.end()) {
+                continue;
+            }
+
+            int g = currentNode->g + 1;  // 假設每步代價為 1
+            int h = manhattanDistance(newX, newY, goalX, goalY);
+
+            Node* neighbor = new Node(newX, newY, g, h, currentNode);
+            openList.push(neighbor);
+        }
+    }
+
+    return {};  // 如果找不到路徑，返回空的路徑
+}
+
+int main() {
+    int gridWidth = 10, gridHeight = 10;
+    int startX = 0, startY = 0;
+    int goalX = 9, goalY = 9;
+
+    vector<Node*> path = AStarSearch(startX, startY, goalX, goalY, gridWidth, gridHeight);
+
+    if (!path.empty()) {
+        cout << "找到最短路徑：" << endl;
+        for (Node* node : path) {
+            cout << "(" << node->x << ", " << node->y << ")" << endl;
+        }
+    } else {
+        cout << "沒有找到路徑！" << endl;
+    }
+
+    return 0;
+}
+
+
+--------------------------------------------------------------------------------------------
+6.jumpSearch
+
+#include <iostream>
+#include <cmath>
+#include <vector>
+
+using namespace std;
+
+int jumpSearch(const vector<int>& arr, int target) {
+    int n = arr.size();
+    int block_size = sqrt(n); // Determine the block size (sqrt of array length)
+
+    int start = 0;
+    int end = 0;
+
+    // Jump ahead in blocks
+    while (end < n && arr[end] < target) {
+        start = end;
+        end += block_size;
+        if (end > n - 1) {
+            end = n;  // Ensure we do not go beyond the array
+        }
+    }
+
+    // Linear search in the identified block
+    for (int i = start; i < end; ++i) {
+        if (arr[i] == target) {
+            return i; // Element found, return index
+        }
+    }
+
+    return -1; // Element not found
+}
+
+int main() {
+    vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21};
+    int target = 15;
+
+    int result = jumpSearch(arr, target);
+    if (result != -1) {
+        cout << "Element found at index " << result << endl;
+    } else {
+        cout << "Element not found" << endl;
+    }
+
+    return 0;
+}
+
+-----------------------------------------------------------------
+7.hash 搜索
+
+unordered_map 查找
+
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+int main() {
+    // 建立一個unordered_map，將數字與對應的英文名稱關聯
+    std::unordered_map<int, std::string> numToWord;
+
+    // 插入數字對應的英文名稱
+    numToWord[1] = "One";
+    numToWord[2] = "Two";
+    numToWord[3] = "Three";
+    numToWord[4] = "Four";
+    numToWord[5] = "Five";
+
+    // 進行查找
+    int num;
+    std::cout << "Enter a number (1-5): ";
+    std::cin >> num;
+
+    // 檢查數字是否存在於unordered_map中
+    if (numToWord.find(num) != numToWord.end()) {
+        std::cout << "The word for " << num << " is " << numToWord[num] << std::endl;
+    } else {
+        std::cout << "Number not found!" << std::endl;
+    }
+
+    return 0;
+}
+
+
+unordered_set
+
+#include <iostream>
+#include <unordered_set>
+
+int main() {
+    // 建立一個unordered_set，存放一些數字
+    std::unordered_set<int> numbers = {1, 2, 3, 4, 5};
+
+    int num;
+    std::cout << "Enter a number to check: ";
+    std::cin >> num;
+
+    // 檢查數字是否在unordered_set中
+    if (numbers.find(num) != numbers.end()) {
+        std::cout << num << " is found in the set!" << std::endl;
+    } else {
+        std::cout << num << " is not in the set!" << std::endl;
+    }
+
+    return 0;
+}
+
+
+
