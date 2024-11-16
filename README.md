@@ -32,7 +32,7 @@
     10.shell  
 # 搜尋
    特定資料結構中尋找資料的演算法,圖形搜尋、資料庫查詢、迷宮解決問題、人工智慧、機器學習  
-   1.線性搜尋（Linear Search） 
+   1.線性搜尋（Linear Search）    
    2.二分搜尋（Binary Search）  
    3.深度優先搜尋（Depth-First Search, DFS）  
    4.廣度優先搜尋（Breadth-First Search, BFS）  
