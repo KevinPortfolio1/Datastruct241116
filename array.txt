@@ -1,0 +1,41 @@
+C++  
+    靜態陣列  int arr[5]; 
+    動態陣列  int* arr = new int[5];  // 動態分配陣列  
+             delete[] arr;  // 釋放動態陣列  
+
+             #include <vector>  
+             std::vector<int> vec;  // 動態陣列  
+             vec.push_back(1);  
+             vec.push_back(2);  
+C#
+     靜態陣列  int[] arr = new int[5];  
+     動態陣列  List<int> list = new List<int>();  // 動態陣列  
+              list.Add(1);  
+              list.Add(2);  
+Java
+     靜態陣列  int[] arr = new int[5];  
+	 動態陣列  ArrayList<Integer> list = new ArrayList<>();  // 動態陣列
+               list.add(1);
+               list.add(2);
+Python
+     靜態陣列 arr = [0] * 5
+	 動態陣列 arr = []
+              arr.append(1)  # 動態增加元素
+              arr.append(2)
+PHP
+     靜態陣列  $arr = array(1, 2, 3);
+	 動態陣列  $arr = [];
+               array_push($arr, 1);
+               array_push($arr, 2); 
+JavaScript
+     靜態陣列 let arr = [1, 2, 3];
+	 動態陣列 let arr = [];
+              arr.push(1);  // 動態陣列
+              arr.push(2);
+
+C++		vector	    基於動態陣列實現，自動增長，提供高效隨機訪問，靈活操作元素。
+C#		List<T>	    泛型類型，支持各種方法如 Add(), Remove()，自動調整大小。
+Java    ArrayList   基於動態陣列實現，支持隨機訪問和動態增長，適合儲存大量元素。
+Python	list	    內建資料結構，隨機訪問，支持多種操作，自動增長，靈活處理不同類型元素。
+			   
+	
