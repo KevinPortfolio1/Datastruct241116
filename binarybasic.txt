@@ -1,0 +1,559 @@
+c++
+
+#include <iostream>
+using namespace std;
+
+// 二元樹節點
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int value) : data(value), left(nullptr), right(nullptr) {}
+};
+
+// 插入新節點
+Node* insert(Node* root, int value) {
+    if (root == nullptr) {
+        return new Node(value);
+    }
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    } else {
+        root->right = insert(root->right, value);
+    }
+    return root;
+}
+
+// 查詢節點
+bool search(Node* root, int value) {
+    if (root == nullptr) {
+        return false;
+    }
+    if (root->data == value) {
+        return true;
+    } else if (value < root->data) {
+        return search(root->left, value);
+    } else {
+        return search(root->right, value);
+    }
+}
+
+// 刪除節點
+Node* deleteNode(Node* root, int value) {
+    if (root == nullptr) return root;
+
+    if (value < root->data) {
+        root->left = deleteNode(root->left, value);
+    } else if (value > root->data) {
+        root->right = deleteNode(root->right, value);
+    } else {
+        // 找到要刪除的節點
+        if (root->left == nullptr) {
+            Node* temp = root->right;
+            delete root;
+            return temp;
+        } else if (root->right == nullptr) {
+            Node* temp = root->left;
+            delete root;
+            return temp;
+        }
+
+        // 兩個子樹都有，找到最小的右子樹節點
+        Node* temp = root->right;
+        while (temp && temp->left != nullptr) {
+            temp = temp->left;
+        }
+
+        root->data = temp->data;
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+
+// 中序遍歷
+void inorder(Node* root) {
+    if (root != nullptr) {
+        inorder(root->left);
+        cout << root->data << " ";
+        inorder(root->right);
+    }
+}
+
+int main() {
+    Node* root = nullptr;
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+
+    cout << "Inorder Traversal: ";
+    inorder(root);
+    cout << endl;
+
+    if (search(root, 40)) {
+        cout << "Found 40 in the tree." << endl;
+    } else {
+        cout << "40 not found." << endl;
+    }
+
+    root = deleteNode(root, 20);
+    cout << "After Deleting 20: ";
+    inorder(root);
+    cout << endl;
+
+    return 0;
+}
+
+
+c#
+
+using System;
+
+class Node
+{
+    public int Data;
+    public Node Left, Right;
+    public Node(int value)
+    {
+        Data = value;
+        Left = Right = null;
+    }
+}
+
+class BinaryTree
+{
+    public Node Insert(Node root, int value)
+    {
+        if (root == null)
+            return new Node(value);
+        if (value < root.Data)
+            root.Left = Insert(root.Left, value);
+        else
+            root.Right = Insert(root.Right, value);
+        return root;
+    }
+
+    public bool Search(Node root, int value)
+    {
+        if (root == null)
+            return false;
+        if (root.Data == value)
+            return true;
+        return value < root.Data ? Search(root.Left, value) : Search(root.Right, value);
+    }
+
+    public Node Delete(Node root, int value)
+    {
+        if (root == null) return root;
+
+        if (value < root.Data)
+            root.Left = Delete(root.Left, value);
+        else if (value > root.Data)
+            root.Right = Delete(root.Right, value);
+        else
+        {
+            if (root.Left == null) return root.Right;
+            else if (root.Right == null) return root.Left;
+
+            Node temp = MinValueNode(root.Right);
+            root.Data = temp.Data;
+            root.Right = Delete(root.Right, temp.Data);
+        }
+        return root;
+    }
+
+    public Node MinValueNode(Node node)
+    {
+        Node current = node;
+        while (current.Left != null)
+            current = current.Left;
+        return current;
+    }
+
+    public void Inorder(Node root)
+    {
+        if (root != null)
+        {
+            Inorder(root.Left);
+            Console.Write(root.Data + " ");
+            Inorder(root.Right);
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        BinaryTree tree = new BinaryTree();
+        Node root = null;
+        root = tree.Insert(root, 50);
+        tree.Insert(root, 30);
+        tree.Insert(root, 20);
+        tree.Insert(root, 40);
+        tree.Insert(root, 70);
+        tree.Insert(root, 60);
+        tree.Insert(root, 80);
+
+        Console.Write("Inorder Traversal: ");
+        tree.Inorder(root);
+        Console.WriteLine();
+
+        if (tree.Search(root, 40))
+            Console.WriteLine("Found 40 in the tree.");
+        else
+            Console.WriteLine("40 not found.");
+
+        root = tree.Delete(root, 20);
+        Console.Write("After Deleting 20: ");
+        tree.Inorder(root);
+        Console.WriteLine();
+    }
+}
+
+
+java
+
+class BinaryTree {
+    static class Node {
+        int data;
+        Node left, right;
+        Node(int value) {
+            data = value;
+            left = right = null;
+        }
+    }
+
+    public Node insert(Node root, int value) {
+        if (root == null) {
+            return new Node(value);
+        }
+        if (value < root.data) {
+            root.left = insert(root.left, value);
+        } else {
+            root.right = insert(root.right, value);
+        }
+        return root;
+    }
+
+    public boolean search(Node root, int value) {
+        if (root == null) return false;
+        if (root.data == value) return true;
+        return value < root.data ? search(root.left, value) : search(root.right, value);
+    }
+
+    public Node delete(Node root, int value) {
+        if (root == null) return root;
+        if (value < root.data) {
+            root.left = delete(root.left, value);
+        } else if (value > root.data) {
+            root.right = delete(root.right, value);
+        } else {
+            if (root.left == null) return root.right;
+            else if (root.right == null) return root.left;
+            root.data = minValue(root.right);
+            root.right = delete(root.right, root.data);
+        }
+        return root;
+    }
+
+    public int minValue(Node root) {
+        int minValue = root.data;
+        while (root.left != null) {
+            minValue = root.left.data;
+            root = root.left;
+        }
+        return minValue;
+    }
+
+    public void inorder(Node root) {
+        if (root != null) {
+            inorder(root.left);
+            System.out.print(root.data + " ");
+            inorder(root.right);
+        }
+    }
+
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree();
+        Node root = null;
+        root = tree.insert(root, 50);
+        tree.insert(root, 30);
+        tree.insert(root, 20);
+        tree.insert(root, 40);
+        tree.insert(root, 70);
+        tree.insert(root, 60);
+        tree.insert(root, 80);
+
+        System.out.print("Inorder Traversal: ");
+        tree.inorder(root);
+        System.out.println();
+
+        if (tree.search(root, 40)) {
+            System.out.println("Found 40 in the tree.");
+        } else {
+            System.out.println("40 not found.");
+        }
+
+        root = tree.delete(root, 20);
+        System.out.print("After Deleting 20: ");
+        tree.inorder(root);
+        System.out.println();
+    }
+}
+
+
+javascript
+
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class BinaryTree {
+    insert(root, value) {
+        if (root === null) {
+            return new Node(value);
+        }
+        if (value < root.data) {
+            root.left = this.insert(root.left, value);
+        } else {
+            root.right = this.insert(root.right, value);
+        }
+        return root;
+    }
+
+    search(root, value) {
+        if (root === null) return false;
+        if (root.data === value) return true;
+        return value < root.data ? this.search(root.left, value) : this.search(root.right, value);
+    }
+
+    delete(root, value) {
+        if (root === null) return root;
+
+        if (value < root.data) {
+            root.left = this.delete(root.left, value);
+        } else if (value > root.data) {
+            root.right = this.delete(root.right, value);
+        } else {
+            if (root.left === null) return root.right;
+            else if (root.right === null) return root.left;
+
+            root.data = this.minValue(root.right);
+            root.right = this.delete(root.right, root.data);
+        }
+        return root;
+    }
+
+    minValue(root) {
+        let current = root;
+        while (current.left !== null) {
+            current = current.left;
+        }
+        return current.data;
+    }
+
+    inorder(root) {
+        if (root !== null) {
+            this.inorder(root.left);
+            console.log(root.data);
+            this.inorder(root.right);
+        }
+    }
+}
+
+// 使用範例
+let tree = new BinaryTree();
+let root = null;
+root = tree.insert(root, 50);
+tree.insert(root, 30);
+tree.insert(root, 20);
+tree.insert(root, 40);
+tree.insert(root, 70);
+tree.insert(root, 60);
+tree.insert(root, 80);
+
+console.log("Inorder Traversal:");
+tree.inorder(root);
+
+console.log("Searching for 40:", tree.search(root, 40));
+
+root = tree.delete(root, 20);
+console.log("After Deleting 20:");
+tree.inorder(root);
+
+
+php
+
+<?php
+class Node {
+    public $data, $left, $right;
+    public function __construct($value) {
+        $this->data = $value;
+        $this->left = $this->right = null;
+    }
+}
+
+class BinaryTree {
+    public function insert($root, $value) {
+        if ($root === null) {
+            return new Node($value);
+        }
+        if ($value < $root->data) {
+            $root->left = $this->insert($root->left, $value);
+        } else {
+            $root->right = $this->insert($root->right, $value);
+        }
+        return $root;
+    }
+
+    public function search($root, $value) {
+        if ($root === null) return false;
+        if ($root->data === $value) return true;
+        return $value < $root->data ? $this->search($root->left, $value) : $this->search($root->right, $value);
+    }
+
+    public function delete($root, $value) {
+        if ($root === null) return $root;
+
+        if ($value < $root->data) {
+            $root->left = $this->delete($root->left, $value);
+        } else if ($value > $root->data) {
+            $root->right = $this->delete($root->right, $value);
+        } else {
+            if ($root->left === null) return $root->right;
+            else if ($root->right === null) return $root->left;
+
+            $root->data = $this->minValue($root->right);
+            $root->right = $this->delete($root->right, $root->data);
+        }
+        return $root;
+    }
+
+    public function minValue($root) {
+        while ($root->left !== null) {
+            $root = $root->left;
+        }
+        return $root->data;
+    }
+
+    public function inorder($root) {
+        if ($root !== null) {
+            $this->inorder($root->left);
+            echo $root->data . " ";
+            $this->inorder($root->right);
+        }
+    }
+}
+
+// 測試範例
+$tree = new BinaryTree();
+$root = null;
+$root = $tree->insert($root, 50);
+$tree->insert($root, 30);
+$tree->insert($root, 20);
+$tree->insert($root, 40);
+$tree->insert($root, 70);
+$tree->insert($root, 60);
+$tree->insert($root, 80);
+
+echo "Inorder Traversal: ";
+$tree->inorder($root);
+echo "\n";
+
+echo "Searching for 40: " . ($tree->search($root, 40) ? "Found" : "Not Found") . "\n";
+
+$root = $tree->delete($root, 20);
+echo "After Deleting 20: ";
+$tree->inorder($root);
+echo "\n";
+?>
+
+
+python
+
+class Node:
+    def __init__(self, value):
+        self.data = value
+        self.left = None
+        self.right = None
+
+class BinaryTree:
+    def insert(self, root, value):
+        if root is None:
+            return Node(value)
+        if value < root.data:
+            root.left = self.insert(root.left, value)
+        else:
+            root.right = self.insert(root.right, value)
+        return root
+
+    def search(self, root, value):
+        if root is None:
+            return False
+        if root.data == value:
+            return True
+        elif value < root.data:
+            return self.search(root.left, value)
+        else:
+            return self.search(root.right, value)
+
+    def delete(self, root, value):
+        if root is None:
+            return root
+
+        if value < root.data:
+            root.left = self.delete(root.left, value)
+        elif value > root.data:
+            root.right = self.delete(root.right, value)
+        else:
+            if root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+
+            root.data = self.minValue(root.right)
+            root.right = self.delete(root.right, root.data)
+
+        return root
+
+    def minValue(self, root):
+        current = root
+        while current.left:
+            current = current.left
+        return current.data
+
+    def inorder(self, root):
+        if root:
+            self.inorder(root.left)
+            print(root.data, end=' ')
+            self.inorder(root.right)
+
+# 範例
+tree = BinaryTree()
+root = None
+root = tree.insert(root, 50)
+tree.insert(root, 30)
+tree.insert(root, 20)
+tree.insert(root, 40)
+tree.insert(root, 70)
+tree.insert(root, 60)
+tree.insert(root, 80)
+
+print("Inorder Traversal: ", end="")
+tree.inorder(root)
+print()
+
+print("Searching for 40:", "Found" if tree.search(root, 40) else "Not Found")
+
+root = tree.delete(root, 20)
+print("After Deleting 20: ", end="")
+tree.inorder(root)
+print()
+
+

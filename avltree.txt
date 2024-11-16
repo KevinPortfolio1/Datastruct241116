@@ -1,0 +1,647 @@
+avltree
+
+c++
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* left;
+    Node* right;
+    int height;
+
+    Node(int val) {
+        data = val;
+        left = right = nullptr;
+        height = 1;
+    }
+};
+
+class AVLTree {
+private:
+    Node* root;
+
+    int height(Node* node) {
+        return node ? node->height : 0;
+    }
+
+    int balanceFactor(Node* node) {
+        return height(node->left) - height(node->right);
+    }
+
+    Node* rotateRight(Node* y) {
+        Node* x = y->left;
+        Node* T2 = x->right;
+        x->right = y;
+        y->left = T2;
+        y->height = max(height(y->left), height(y->right)) + 1;
+        x->height = max(height(x->left), height(x->right)) + 1;
+        return x;
+    }
+
+    Node* rotateLeft(Node* x) {
+        Node* y = x->right;
+        Node* T2 = y->left;
+        y->left = x;
+        x->right = T2;
+        x->height = max(height(x->left), height(x->right)) + 1;
+        y->height = max(height(y->left), height(y->right)) + 1;
+        return y;
+    }
+
+    Node* balance(Node* node) {
+        int balance = balanceFactor(node);
+        if (balance > 1) {
+            if (balanceFactor(node->left) < 0)
+                node->left = rotateLeft(node->left);
+            node = rotateRight(node);
+        } else if (balance < -1) {
+            if (balanceFactor(node->right) > 0)
+                node->right = rotateRight(node->right);
+            node = rotateLeft(node);
+        }
+        return node;
+    }
+
+    Node* insert(Node* node, int data) {
+        if (!node)
+            return new Node(data);
+
+        if (data < node->data)
+            node->left = insert(node->left, data);
+        else if (data > node->data)
+            node->right = insert(node->right, data);
+        else
+            return node;
+
+        node->height = 1 + max(height(node->left), height(node->right));
+
+        return balance(node);
+    }
+
+public:
+    AVLTree() : root(nullptr) {}
+
+    void insert(int data) {
+        root = insert(root, data);
+    }
+
+    void inOrder(Node* node) {
+        if (node) {
+            inOrder(node->left);
+            cout << node->data << " ";
+            inOrder(node->right);
+        }
+    }
+
+    void printInOrder() {
+        inOrder(root);
+        cout << endl;
+    }
+};
+
+int main() {
+    AVLTree tree;
+    tree.insert(10);
+    tree.insert(20);
+    tree.insert(30);
+    tree.insert(15);
+
+    cout << "In-order traversal of the AVL tree: ";
+    tree.printInOrder();
+
+    return 0;
+}
+
+
+
+C#
+
+using System;
+
+public class AVLTree
+{
+    public class Node
+    {
+        public int Data;
+        public Node Left;
+        public Node Right;
+        public int Height;
+
+        public Node(int data)
+        {
+            Data = data;
+            Left = Right = null;
+            Height = 1;
+        }
+    }
+
+    private Node root;
+
+    private int Height(Node node)
+    {
+        return node == null ? 0 : node.Height;
+    }
+
+    private int BalanceFactor(Node node)
+    {
+        return Height(node.Left) - Height(node.Right);
+    }
+
+    private Node RotateRight(Node y)
+    {
+        Node x = y.Left;
+        Node T2 = x.Right;
+        x.Right = y;
+        y.Left = T2;
+        y.Height = Math.Max(Height(y.Left), Height(y.Right)) + 1;
+        x.Height = Math.Max(Height(x.Left), Height(x.Right)) + 1;
+        return x;
+    }
+
+    private Node RotateLeft(Node x)
+    {
+        Node y = x.Right;
+        Node T2 = y.Left;
+        y.Left = x;
+        x.Right = T2;
+        x.Height = Math.Max(Height(x.Left), Height(x.Right)) + 1;
+        y.Height = Math.Max(Height(y.Left), Height(y.Right)) + 1;
+        return y;
+    }
+
+    private Node Balance(Node node)
+    {
+        int balance = BalanceFactor(node);
+        if (balance > 1)
+        {
+            if (BalanceFactor(node.Left) < 0)
+                node.Left = RotateLeft(node.Left);
+            node = RotateRight(node);
+        }
+        else if (balance < -1)
+        {
+            if (BalanceFactor(node.Right) > 0)
+                node.Right = RotateRight(node.Right);
+            node = RotateLeft(node);
+        }
+        return node;
+    }
+
+    private Node Insert(Node node, int data)
+    {
+        if (node == null)
+            return new Node(data);
+
+        if (data < node.Data)
+            node.Left = Insert(node.Left, data);
+        else if (data > node.Data)
+            node.Right = Insert(node.Right, data);
+        else
+            return node;
+
+        node.Height = Math.Max(Height(node.Left), Height(node.Right)) + 1;
+        return Balance(node);
+    }
+
+    public void Insert(int data)
+    {
+        root = Insert(root, data);
+    }
+
+    private void InOrder(Node node)
+    {
+        if (node != null)
+        {
+            InOrder(node.Left);
+            Console.Write(node.Data + " ");
+            InOrder(node.Right);
+        }
+    }
+
+    public void PrintInOrder()
+    {
+        InOrder(root);
+        Console.WriteLine();
+    }
+
+    public static void Main(string[] args)
+    {
+        AVLTree tree = new AVLTree();
+        tree.Insert(10);
+        tree.Insert(20);
+        tree.Insert(30);
+        tree.Insert(15);
+
+        Console.WriteLine("In-order traversal of the AVL tree:");
+        tree.PrintInOrder();
+    }
+}
+
+
+Java
+
+class AVLTree {
+    class Node {
+        int data;
+        Node left, right;
+        int height;
+
+        Node(int data) {
+            this.data = data;
+            left = right = null;
+            height = 1;
+        }
+    }
+
+    private Node root;
+
+    private int height(Node node) {
+        return node == null ? 0 : node.height;
+    }
+
+    private int balanceFactor(Node node) {
+        return height(node.left) - height(node.right);
+    }
+
+    private Node rotateRight(Node y) {
+        Node x = y.left;
+        Node T2 = x.right;
+        x.right = y;
+        y.left = T2;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        return x;
+    }
+
+    private Node rotateLeft(Node x) {
+        Node y = x.right;
+        Node T2 = y.left;
+        y.left = x;
+        x.right = T2;
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        return y;
+    }
+
+    private Node balance(Node node) {
+        int balance = balanceFactor(node);
+        if (balance > 1) {
+            if (balanceFactor(node.left) < 0)
+                node.left = rotateLeft(node.left);
+            node = rotateRight(node);
+        } else if (balance < -1) {
+            if (balanceFactor(node.right) > 0)
+                node.right = rotateRight(node.right);
+            node = rotateLeft(node);
+        }
+        return node;
+    }
+
+    private Node insert(Node node, int data) {
+        if (node == null)
+            return new Node(data);
+
+        if (data < node.data)
+            node.left = insert(node.left, data);
+        else if (data > node.data)
+            node.right = insert(node.right, data);
+        else
+            return node;
+
+        node.height = Math.max(height(node.left), height(node.right)) + 1;
+
+        return balance(node);
+    }
+
+    public void insert(int data) {
+        root = insert(root, data);
+    }
+
+    private void inOrder(Node node) {
+        if (node != null) {
+            inOrder(node.left);
+            System.out.print(node.data + " ");
+            inOrder(node.right);
+        }
+    }
+
+    public void printInOrder() {
+        inOrder(root);
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        AVLTree tree = new AVLTree();
+        tree.insert(10);
+        tree.insert(20);
+        tree.insert(30);
+        tree.insert(15);
+
+        System.out.print("In-order traversal of the AVL tree: ");
+        tree.printInOrder();
+    }
+}
+
+
+JavaScript
+
+class AVLTree {
+    class Node {
+        constructor(data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+            this.height = 1;
+        }
+    }
+
+    constructor() {
+        this.root = null;
+    }
+
+    height(node) {
+        return node ? node.height : 0;
+    }
+
+    balanceFactor(node) {
+        return this.height(node.left) - this.height(node.right);
+    }
+
+    rotateRight(y) {
+        const x = y.left;
+        const T2 = x.right;
+        x.right = y;
+        y.left = T2;
+        y.height = Math.max(this.height(y.left), this.height(y.right)) + 1;
+        x.height = Math.max(this.height(x.left), this.height(x.right)) + 1;
+        return x;
+    }
+
+    rotateLeft(x) {
+        const y = x.right;
+        const T2 = y.left;
+        y.left = x;
+        x.right = T2;
+        x.height = Math.max(this.height(x.left), this.height(x.right)) + 1;
+        y.height = Math.max(this.height(y.left), this.height(y.right)) + 1;
+        return y;
+    }
+
+    balance(node) {
+        const balance = this.balanceFactor(node);
+        if (balance > 1) {
+            if (this.balanceFactor(node.left) < 0) {
+                node.left = this.rotateLeft(node.left);
+            }
+            node = this.rotateRight(node);
+        } else if (balance < -1) {
+            if (this.balanceFactor(node.right) > 0) {
+                node.right = this.rotateRight(node.right);
+            }
+            node = this.rotateLeft(node);
+        }
+        return node;
+    }
+
+    insert(node, data) {
+        if (!node) {
+            return new this.Node(data);
+        }
+
+        if (data < node.data) {
+            node.left = this.insert(node.left, data);
+        } else if (data > node.data) {
+            node.right = this.insert(node.right, data);
+        } else {
+            return node;
+        }
+
+        node.height = Math.max(this.height(node.left), this.height(node.right)) + 1;
+        return this.balance(node);
+    }
+
+    insertData(data) {
+        this.root = this.insert(this.root, data);
+    }
+
+    inOrder(node) {
+        if (node) {
+            this.inOrder(node.left);
+            console.log(node.data);
+            this.inOrder(node.right);
+        }
+    }
+
+    printInOrder() {
+        this.inOrder(this.root);
+    }
+}
+
+const tree = new AVLTree();
+tree.insertData(10);
+tree.insertData(20);
+tree.insertData(30);
+tree.insertData(15);
+
+console.log("In-order traversal of the AVL tree:");
+tree.printInOrder();
+
+
+PHP
+
+<?php
+class AVLTree {
+    class Node {
+        public $data;
+        public $left;
+        public $right;
+        public $height;
+
+        function __construct($data) {
+            $this->data = $data;
+            $this->left = $this->right = null;
+            $this->height = 1;
+        }
+    }
+
+    private $root;
+
+    function __construct() {
+        $this->root = null;
+    }
+
+    private function height($node) {
+        return $node ? $node->height : 0;
+    }
+
+    private function balanceFactor($node) {
+        return $this->height($node->left) - $this->height($node->right);
+    }
+
+    private function rotateRight($y) {
+        $x = $y->left;
+        $T2 = $x->right;
+        $x->right = $y;
+        $y->left = $T2;
+        $y->height = max($this->height($y->left), $this->height($y->right)) + 1;
+        $x->height = max($this->height($x->left), $this->height($x->right)) + 1;
+        return $x;
+    }
+
+    private function rotateLeft($x) {
+        $y = $x->right;
+        $T2 = $y->left;
+        $y->left = $x;
+        $x->right = $T2;
+        $x->height = max($this->height($x->left), $this->height($x->right)) + 1;
+        $y->height = max($this->height($y->left), $this->height($y->right)) + 1;
+        return $y;
+    }
+
+    private function balance($node) {
+        $balance = $this->balanceFactor($node);
+        if ($balance > 1) {
+            if ($this->balanceFactor($node->left) < 0)
+                $node->left = $this->rotateLeft($node->left);
+            $node = $this->rotateRight($node);
+        } else if ($balance < -1) {
+            if ($this->balanceFactor($node->right) > 0)
+                $node->right = $this->rotateRight($node->right);
+            $node = $this->rotateLeft($node);
+        }
+        return $node;
+    }
+
+    private function insert($node, $data) {
+        if (!$node) return new $this->Node($data);
+
+        if ($data < $node->data)
+            $node->left = $this->insert($node->left, $data);
+        else if ($data > $node->data)
+            $node->right = $this->insert($node->right, $data);
+        else
+            return $node;
+
+        $node->height = max($this->height($node->left), $this->height($node->right)) + 1;
+
+        return $this->balance($node);
+    }
+
+    public function insertData($data) {
+        $this->root = $this->insert($this->root, $data);
+    }
+
+    private function inOrder($node) {
+        if ($node) {
+            $this->inOrder($node->left);
+            echo $node->data . " ";
+            $this->inOrder($node->right);
+        }
+    }
+
+    public function printInOrder() {
+        $this->inOrder($this->root);
+        echo "\n";
+    }
+}
+
+$tree = new AVLTree();
+$tree->insertData(10);
+$tree->insertData(20);
+$tree->insertData(30);
+$tree->insertData(15);
+
+echo "In-order traversal of the AVL tree:\n";
+$tree->printInOrder();
+?>
+
+
+Python
+
+class AVLTree:
+    class Node:
+        def __init__(self, data):
+            self.data = data
+            self.left = None
+            self.right = None
+            self.height = 1
+
+    def __init__(self):
+        self.root = None
+
+    def height(self, node):
+        return node.height if node else 0
+
+    def balance_factor(self, node):
+        return self.height(node.left) - self.height(node.right)
+
+    def rotate_right(self, y):
+        x = y.left
+        T2 = x.right
+        x.right = y
+        y.left = T2
+        y.height = max(self.height(y.left), self.height(y.right)) + 1
+        x.height = max(self.height(x.left), self.height(x.right)) + 1
+        return x
+
+    def rotate_left(self, x):
+        y = x.right
+        T2 = y.left
+        y.left = x
+        x.right = T2
+        x.height = max(self.height(x.left), self.height(x.right)) + 1
+        y.height = max(self.height(y.left), self.height(y.right)) + 1
+        return y
+
+    def balance(self, node):
+        balance = self.balance_factor(node)
+        if balance > 1:
+            if self.balance_factor(node.left) < 0:
+                node.left = self.rotate_left(node.left)
+            return self.rotate_right(node)
+        elif balance < -1:
+            if self.balance_factor(node.right) > 0:
+                node.right = self.rotate_right(node.right)
+            return self.rotate_left(node)
+        return node
+
+    def insert(self, node, data):
+        if not node:
+            return self.Node(data)
+
+        if data < node.data:
+            node.left = self.insert(node.left, data)
+        elif data > node.data:
+            node.right = self.insert(node.right, data)
+        else:
+            return node
+
+        node.height = max(self.height(node.left), self.height(node.right)) + 1
+        return self.balance(node)
+
+    def insert_data(self, data):
+        self.root = self.insert(self.root, data)
+
+    def in_order(self, node):
+        if node:
+            self.in_order(node.left)
+            print(node.data, end=" ")
+            self.in_order(node.right)
+
+    def print_in_order(self):
+        self.in_order(self.root)
+        print()
+
+# Test the AVL Tree
+tree = AVLTree()
+tree.insert_data(10)
+tree.insert_data(20)
+tree.insert_data(30)
+tree.insert_data(15)
+
+print("In-order traversal of the AVL tree:")
+tree.print_in_order()
