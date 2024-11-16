@@ -1,0 +1,100 @@
+C++
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    stack<int> stk;
+
+    // Push elements
+    stk.push(10);
+    stk.push(20);
+    stk.push(30);
+
+    // Pop elements
+    while (!stk.empty()) {
+        cout << stk.top() << endl;  // Show top element
+        stk.pop(); 					// Remove top element
+    }
+
+    return 0;
+}
+
+C#
+using System;
+using System.Collections.Generic;
+
+class Program {
+    static void Main() {
+        Stack<int> stack = new Stack<int>();
+
+        // Push elements
+        stack.Push(10);
+        stack.Push(20);
+        stack.Push(30);
+
+        // Pop elements
+        while (stack.Count > 0) {
+            Console.WriteLine(stack.Pop());
+        }
+    }
+}
+
+Java
+import java.util.Stack;
+public class Main {
+    public static void main(String[] args) {
+        Stack<Integer> stack = new Stack<>();
+
+        // Push elements
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+
+        // Pop elements
+        while (!stack.isEmpty()) {
+            System.out.println(stack.pop());
+        }
+    }
+}
+
+JavaScript
+
+let stack = [];
+stack.push(10);
+stack.push(20);
+stack.push(30);
+
+// Pop elements
+while (stack.length > 0) {
+    console.log(stack.pop());
+}
+
+Python
+
+stack = []
+
+# Push elements
+stack.append(10)
+stack.append(20)
+stack.append(30)
+
+# Pop elements
+while stack:
+    print(stack.pop())
+	
+PHP
+
+<?php
+$stack = array();
+
+array_push($stack, 10);
+array_push($stack, 20);
+array_push($stack, 30);
+
+// Pop elements
+while (count($stack) > 0) {
+    echo array_pop($stack) . "\n";
+}
+?>
+

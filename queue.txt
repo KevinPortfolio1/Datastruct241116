@@ -1,0 +1,107 @@
+C++
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int main() {
+    queue<int> q;
+
+    // Enqueue elements
+    q.push(10);
+    q.push(20);
+    q.push(30);
+
+    // Dequeue elements
+    while (!q.empty()) {
+        cout << q.front() << endl; // Show front element
+        q.pop(); // Remove front element
+    }
+
+    return 0;
+}
+
+C#
+
+using System;
+using System.Collections.Generic;
+
+class Program {
+    static void Main() {
+        Queue<int> queue = new Queue<int>();
+
+        // Enqueue elements
+        queue.Enqueue(10);
+        queue.Enqueue(20);
+        queue.Enqueue(30);
+
+        // Dequeue elements
+        while (queue.Count > 0) {
+            Console.WriteLine(queue.Dequeue());
+        }
+    }
+}
+
+Java
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main {
+    public static void main(String[] args) {
+        Queue<Integer> queue = new LinkedList<>();
+
+        // Enqueue elements
+        queue.offer(10);
+        queue.offer(20);
+        queue.offer(30);
+
+        // Dequeue elements
+        while (!queue.isEmpty()) {
+            System.out.println(queue.poll());
+        }
+    }
+}
+
+JavaScript
+
+let queue = [];
+
+queue.push(10);
+queue.push(20);
+queue.push(30);
+
+// Dequeue elements
+while (queue.length > 0) {
+    console.log(queue.shift());
+}
+
+Python
+
+from collections import deque
+
+queue = deque()
+
+# Enqueue elements
+queue.append(10)
+queue.append(20)
+queue.append(30)
+
+# Dequeue elements
+while queue:
+    print(queue.popleft())
+	
+PHP
+
+<?php
+$queue = array();
+
+array_push($queue, 10);
+array_push($queue, 20);
+array_push($queue, 30);
+
+// Dequeue elements
+while (count($queue) > 0) {
+    echo array_shift($queue) . "\n";
+}
+?>
