@@ -1,0 +1,531 @@
+1. 冒泡排序 (Bubble Sort)
+
+c++
+---------------------------
+#include <iostream>
+using namespace std;
+
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+int main() {
+    int arr[] = {64, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    
+    bubbleSort(arr, n);
+    
+    cout << "排序後的陣列：";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    return 0;
+}
+
+c#
+--------------------------------------------
+using System;
+
+class Program {
+    static void BubbleSort(int[] arr) {
+        int n = arr.Length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    static void Main() {
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
+        BubbleSort(arr);
+        
+        Console.WriteLine("排序後的陣列：");
+        foreach (int num in arr) {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+java
+----------------------------------------------------
+public class BubbleSort {
+    static void bubbleSort(int arr[]) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int arr[] = {64, 34, 25, 12, 22, 11, 90};
+        bubbleSort(arr);
+        
+        System.out.println("排序後的陣列：");
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+
+JavaScript 
+---------------------------------------------------
+function bubbleSort(arr) {
+    let n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+let arr = [64, 34, 25, 12, 22, 11, 90];
+bubbleSort(arr);
+
+console.log("排序後的陣列：", arr);
+
+PHP 
+-------------------------------------------------
+<?php
+function bubbleSort($arr) {
+    $n = count($arr);
+    for ($i = 0; $i < $n - 1; $i++) {
+        for ($j = 0; $j < $n - $i - 1; $j++) {
+            if ($arr[$j] > $arr[$j + 1]) {
+                $temp = $arr[$j];
+                $arr[$j] = $arr[$j + 1];
+                $arr[$j + 1] = $temp;
+            }
+        }
+    }
+    return $arr;
+}
+
+$arr = [64, 34, 25, 12, 22, 11, 90];
+$arr = bubbleSort($arr);
+
+echo "排序後的陣列：" . implode(" ", $arr) . "\n";
+?>
+
+
+Python 
+----------------------------------------------------
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+arr = [64, 34, 25, 12, 22, 11, 90]
+bubble_sort(arr)
+print("排序後的陣列:", arr)
+
+
+2. 快速排序 (Quick Sort)
+
+C++
+-----------------------------
+#include <iostream>
+using namespace std;
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int arr[] = {64, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    
+    quickSort(arr, 0, n - 1);
+    
+    cout << "排序後的陣列：";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    return 0;
+}
+
+
+c#
+--------------------------------------------
+using System;
+
+class Program {
+    static int Partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (arr[j] < pivot) {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        int temp1 = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp1;
+        return i + 1;
+    }
+
+    static void QuickSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int pi = Partition(arr, low, high);
+            QuickSort(arr, low, pi - 1);
+            QuickSort(arr, pi + 1, high);
+        }
+    }
+
+    static void Main() {
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
+        QuickSort(arr, 0, arr.Length - 1);
+        
+        Console.WriteLine("排序後的陣列：");
+        foreach (int num in arr) {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+
+Java 
+-------------------------------------------------------
+public class QuickSort {
+    static int partition(int arr[], int low, int high) {
+        int pivot = arr[high];
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (arr[j] < pivot) {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        int temp1 = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp1;
+        return i + 1;
+    }
+
+    static void quickSort(int arr[], int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    public static void main(String[] args) {
+        int arr[] = {64, 34, 25, 12, 22, 11, 90};
+        quickSort(arr, 0, arr.length - 1);
+        
+        System.out.println("排序後的陣列：");
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+
+JavaScript 
+--------------------------------------------------------
+function partition(arr, low, high) {
+    let pivot = arr[high];
+    let i = low - 1;
+    for (let j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            [arr[i], arr[j]] = [arr[j], arr[i]]; // swap
+        }
+    }
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]]; // swap
+    return i + 1;
+}
+
+function quickSort(arr, low, high) {
+    if (low < high) {
+        let pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+let arr = [64, 34, 25, 12, 22, 11, 90];
+quickSort(arr, 0, arr.length - 1);
+console.log("排序後的陣列:", arr);
+
+
+PHP 
+---------------------------------------------------------------
+<?php
+function partition(&$arr, $low, $high) {
+    $pivot = $arr[$high];
+    $i = $low - 1;
+    for ($j = $low; $j < $high; $j++) {
+        if ($arr[$j] < $pivot) {
+            $i++;
+            list($arr[$i], $arr[$j]) = array($arr[$j], $arr[$i]);
+        }
+    }
+    list($arr[$i + 1], $arr[$high]) = array($arr[$high], $arr[$i + 1]);
+    return $i + 1;
+}
+
+function quickSort(&$arr, $low, $high) {
+    if ($low < $high) {
+        $pi = partition($arr, $low, $high);
+        quickSort($arr, $low, $pi - 1);
+        quickSort($arr, $pi + 1, $high);
+    }
+}
+
+$arr = [64, 34, 25, 12, 22, 11, 90];
+quickSort($arr, 0, count($arr) - 1);
+
+echo "排序後的陣列：" . implode(" ", $arr) . "\n";
+?>
+
+
+Python 
+--------------------------------------------------------------------
+def partition(arr, low, high):
+    pivot = arr[high]
+    i = low - 1
+    for j in range(low, high):
+        if arr[j] < pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
+def quick_sort(arr, low, high):
+    if low < high:
+        pi = partition(arr, low, high)
+        quick_sort(arr, low, pi - 1)
+        quick_sort(arr, pi + 1, high)
+
+arr = [64, 34, 25, 12, 22, 11, 90]
+quick_sort(arr, 0, len(arr) - 1)
+print("排序後的陣列:", arr)
+
+
+3.選擇排序
+
+C++
+---------------------------------------------------
+#include <iostream>
+using namespace std;
+
+void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        // 交換元素
+        if (minIndex != i) {
+            swap(arr[i], arr[minIndex]);
+        }
+    }
+}
+
+int main() {
+    int arr[] = {64, 25, 12, 22, 11};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    
+    selectionSort(arr, n);
+    
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    return 0;
+}
+
+
+C# 
+------------------------------------------
+using System;
+
+class Program {
+    static void SelectionSort(int[] arr) {
+        int n = arr.Length;
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            // 交換元素
+            if (minIndex != i) {
+                int temp = arr[i];
+                arr[i] = arr[minIndex];
+                arr[minIndex] = temp;
+            }
+        }
+    }
+
+    static void Main() {
+        int[] arr = {64, 25, 12, 22, 11};
+        SelectionSort(arr);
+
+        Console.WriteLine("Sorted array: ");
+        foreach (int val in arr) {
+            Console.Write(val + " ");
+        }
+    }
+}
+
+
+Java 
+----------------------------------------------
+public class SelectionSort {
+    public static void selectionSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            // 交換元素
+            if (minIndex != i) {
+                int temp = arr[i];
+                arr[i] = arr[minIndex];
+                arr[minIndex] = temp;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {64, 25, 12, 22, 11};
+        selectionSort(arr);
+
+        System.out.println("Sorted array:");
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+
+JavaScript 
+--------------------------------------------------
+function selectionSort(arr) {
+    const n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+        let minIndex = i;
+        for (let j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        // 交換元素
+        if (minIndex !== i) {
+            [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+        }
+    }
+}
+
+const arr = [64, 25, 12, 22, 11];
+selectionSort(arr);
+
+console.log("Sorted array: ", arr);
+
+
+PHP 
+-------------------------------------------------------------------
+<?php
+function selectionSort($arr) {
+    $n = count($arr);
+    for ($i = 0; $i < $n - 1; $i++) {
+        $minIndex = $i;
+        for ($j = $i + 1; $j < $n; $j++) {
+            if ($arr[$j] < $arr[$minIndex]) {
+                $minIndex = $j;
+            }
+        }
+        // 交換元素
+        if ($minIndex != $i) {
+            $temp = $arr[$i];
+            $arr[$i] = $arr[$minIndex];
+            $arr[$minIndex] = $temp;
+        }
+    }
+    return $arr;
+}
+
+$arr = [64, 25, 12, 22, 11];
+$arr = selectionSort($arr);
+
+echo "Sorted array: " . implode(" ", $arr);
+?>
+
+
+Python 
+---------------------------------------------
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        # 交換元素
+        if min_index != i:
+            arr[i], arr[min_index] = arr[min_index], arr[i]
+
+arr = [64, 25, 12, 22, 11]
+selection_sort(arr)
+
+print("Sorted array:", arr)
+
+
