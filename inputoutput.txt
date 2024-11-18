@@ -1,0 +1,149 @@
+1. 标准输出（cout）
+
+cout 用于输出数据到控制台，通常与流插入操作符 << 一起使用。
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 5;
+    double b = 3.14;
+    
+    cout << "整数: " << a << endl;
+    cout << "浮动数: " << b << endl;
+    
+    return 0;
+}
+
+    endl 用于输出换行符，并刷新输出缓冲区。
+    \n 也可以用于换行。
+
+2. 标准输入（cin）
+
+cin 用于从控制台读取输入，通常与流提取操作符 >> 一起使用。
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a;
+    cout << "请输入一个整数: ";
+    cin >> a; // 从控制台读取整数
+
+    cout << "你输入的数字是: " << a << endl;
+    
+    return 0;
+}
+
+    cin 会读取一个整数，字符或浮点数，根据用户输入的类型决定。
+
+3. 错误输出（cerr）
+
+cerr 用于输出错误信息，默认输出到标准错误流。它通常与 << 一起使用。
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    cerr << "这是一个错误信息！" << endl;
+    return 0;
+}
+
+    与 cout 相比，cerr 输出的内容通常不被缓冲，适用于及时报告错误。
+
+4. 日志输出（clog）
+
+clog 用于输出日志信息，默认输出到标准错误流，但与 cerr 不同，它是缓冲的。
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    clog << "这是一个日志信息！" << endl;
+    return 0;
+}
+
+5. 格式化输入输出
+
+C++ 还支持格式化输出，使用 iomanip 库来控制输出格式。
+
+    设置数字精度：
+
+#include <iostream>
+#include <iomanip>  // 包含 setprecision
+using namespace std;
+
+int main() {
+    double num = 3.14159265;
+    cout << "默认输出: " << num << endl;
+    cout << "设置精度为 3: " << setprecision(3) << num << endl;
+    return 0;
+}
+
+设置宽度与填充字符：
+
+    #include <iostream>
+    #include <iomanip>  // 包含 setw, setfill
+    using namespace std;
+
+    int main() {
+        int num = 42;
+        cout << "设置宽度为 6, 填充字符为 '0': " << setw(6) << setfill('0') << num << endl;
+        return 0;
+    }
+
+6. 文件输入输出
+
+C++ 还可以通过文件流进行文件的读写。使用 <fstream> 库来处理文件输入输出。
+
+    文件写入（输出到文件）：
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ofstream outfile("example.txt"); // 打开文件用于写入
+    if (outfile.is_open()) {
+        outfile << "写入文件内容" << endl;
+        outfile.close();
+    } else {
+        cout << "文件打开失败!" << endl;
+    }
+    return 0;
+}
+
+文件读取（从文件输入）：
+
+    #include <iostream>
+    #include <fstream>
+    using namespace std;
+
+    int main() {
+        ifstream infile("example.txt"); // 打开文件用于读取
+        string line;
+        if (infile.is_open()) {
+            while (getline(infile, line)) {
+                cout << line << endl; // 输出文件内容
+            }
+            infile.close();
+        } else {
+            cout << "文件打开失败!" << endl;
+        }
+        return 0;
+    }
+
+7. 更多输入输出操作
+
+    读取一行输入（包含空格）： cin 默认不读取空格和换行符，但是可以使用 getline() 函数读取整行输入。
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    string name;
+    cout << "请输入名字: ";
+    getline(cin, name);  // 读取整行输入
+    cout << "你好, " << name << "!" << endl;
+    return 0;
+}
